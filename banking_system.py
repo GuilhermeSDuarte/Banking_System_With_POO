@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod, abstractproperty
 from datetime import datetime
 
+
 class Transacao(ABC):
 
     @property
@@ -11,6 +12,7 @@ class Transacao(ABC):
     @abstractmethod
     def registrar(self, conta):
         pass
+
 
 class Deposito(Transacao):
 
@@ -27,6 +29,7 @@ class Deposito(Transacao):
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
 
+
 class Saque(Transacao):
     def __init__(self, valor):
         self._valor = valor
@@ -41,6 +44,7 @@ class Saque(Transacao):
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
 
+
 class Cliente:
 
     def __init__(self, endereco):
@@ -53,6 +57,7 @@ class Cliente:
     def adicionar_conta(self, conta):
         self.contas.append(conta)
 
+
 class PessoaFisica(Cliente):
 
     def __init__(self, cpf, nome, data_nascimento, endereco):
@@ -61,9 +66,10 @@ class PessoaFisica(Cliente):
         self.nome = nome
         self.data_nascimento = data_nascimento
 
+
 class Conta:
 
-    def __init__(self, saldo, numero, agencia, cliente, historico):
+    def __init__(self, numero, cliente):
         self._saldo = 0
         self._numero = numero
         self._agencia = "0001"
@@ -121,6 +127,7 @@ class Conta:
 
         return True
 
+
 class ContaCorrente(Conta):
 
     def __init__(self, numero, cliente, limite=500, limite_saques=3):
@@ -146,6 +153,8 @@ class ContaCorrente(Conta):
             return super().sacar(valor)
 
         return False
+
+
 class Historico:
 
     def __init__(self):
@@ -163,4 +172,3 @@ class Historico:
                 "data": datetime.now().strftime("%d/%m?%Y %H:%M:%s"),
             }
         )
-
